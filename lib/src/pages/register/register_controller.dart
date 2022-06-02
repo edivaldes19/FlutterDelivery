@@ -7,6 +7,7 @@ import 'package:flutter_delivery/src/providers/users_provider.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:sn_progress_dialog/progress_dialog.dart';
 
 class RegisterController extends GetxController {
   TextEditingController emailController = TextEditingController();
@@ -18,7 +19,7 @@ class RegisterController extends GetxController {
   UsersProvider usersProvider = UsersProvider();
   ImagePicker picker = ImagePicker();
   File? imageFile;
-  void register() async {
+  void register(BuildContext ctx) async {
     String email = emailController.text.trim();
     String name = nameController.text.trim();
     String lastname = lastnameController.text.trim();
@@ -26,6 +27,8 @@ class RegisterController extends GetxController {
     String password = passwordController.text.trim();
     String confirmPassword = confirmPasswordController.text.trim();
     if (isValidForm(email, name, lastname, phone, password, confirmPassword)) {
+      ProgressDialog dialog = ProgressDialog(context: ctx);
+      dialog.show(max: 100, msg: 'Espere un momento');
       User user = User(
           email: email,
           name: name,
@@ -34,20 +37,17 @@ class RegisterController extends GetxController {
           password: password);
       Stream stream = await usersProvider.registerWithImage(user, imageFile!);
       stream.listen((res) {
+        dialog.close();
         ResponseApi responseApi = ResponseApi.fromJson(json.decode(res));
         if (responseApi.success == true) {
           GetStorage().write('user', responseApi.data);
-          goToHomePage();
+          Get.offNamedUntil('/client/products/list', (route) => false);
         } else {
           Get.snackbar(
               'Error', responseApi.message ?? 'Error al registrar el usuario.');
         }
       });
     }
-  }
-
-  void goToHomePage() {
-    Get.offNamedUntil('/home', (route) => false);
   }
 
   bool isValidForm(String email, String name, String lastname, String phone,

@@ -7,7 +7,7 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: Container(height: 50, child: _textDontHaveAccount()),
+      bottomNavigationBar: SizedBox(height: 50, child: _textDontHaveAccount()),
       body: Stack(
         children: [
           _backgroundCover(context),

@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_delivery/src/models/response_api.dart';
+import 'package:flutter_delivery/src/models/user.dart';
 import 'package:flutter_delivery/src/providers/users_provider.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -19,16 +20,17 @@ class LoginController extends GetxController {
       ResponseApi responseApi = await usersProvider.login(email, password);
       if (responseApi.success == true) {
         GetStorage().write('user', responseApi.data);
-        goToHomePage();
+        User myUser = User.fromJson(GetStorage().read('user') ?? {});
+        if (myUser.roles!.length > 1) {
+          Get.offNamedUntil('/roles', (route) => false);
+        } else {
+          Get.offNamedUntil('/client/home', (route) => false);
+        }
       } else {
         Get.snackbar(
             'Error', responseApi.message ?? 'Error al iniciar sesión.');
       }
     }
-  }
-
-  void goToHomePage() {
-    Get.offNamedUntil('/home', (route) => false);
   }
 
   bool isValidForm(String email, String password) {

@@ -38,6 +38,15 @@ dependencies:
   get_storage: ^2.0.3
   image_picker: ^0.8.5+3
   http: ^0.13.4
+  sn_progress_dialog: ^1.0.8
+  modal_bottom_sheet: ^2.0.1
+  flutter_image_slideshow: ^0.1.2
+  fluttertoast: ^8.0.9
+  google_maps_flutter: ^2.1.6
+  geolocator: ^8.2.1
+  geocoding: ^2.0.4
+  location: ^4.4.0
+  flutter_credit_card: ^3.0.1
 
 dev_dependencies:
   flutter_test:
