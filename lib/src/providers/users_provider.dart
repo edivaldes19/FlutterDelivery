@@ -1,16 +1,30 @@
 import 'dart:convert';
 import 'dart:io';
+
 import 'package:flutter_delivery/src/environment/environment.dart';
 import 'package:flutter_delivery/src/models/response_api.dart';
 import 'package:flutter_delivery/src/models/user.dart';
-import 'package:get_storage/get_storage.dart';
-import 'package:path/path.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
+import 'package:path/path.dart';
 
 class UsersProvider extends GetConnect {
   String url = '${Environment.API_URL}api/users';
   User userSession = User.fromJson(GetStorage().read('user') ?? {});
+  Future<List<User>> findDeliveryMen() async {
+    Response response = await get('$url/findDeliveryMen', headers: {
+      'Content-Type': 'application/json',
+      'Authorization': userSession.sessionToken ?? ''
+    });
+    if (response.statusCode == 401) {
+      Get.snackbar('Error', 'Sin autorización.');
+      return [];
+    }
+    List<User> users = User.fromJsonList(response.body);
+    return users;
+  }
+
   Future<ResponseApi> login(String email, String password) async {
     Response response = await post(
         '$url/login', {'email': email, 'password': password},
@@ -38,6 +52,26 @@ class UsersProvider extends GetConnect {
     request.fields['user'] = json.encode(user);
     final response = await request.send();
     return response.stream.transform(utf8.decoder);
+  }
+
+  Future<ResponseApi> updateNotificationToken(String id, String token) async {
+    Response response = await put('$url/updateNotificationToken', {
+      'id': id,
+      'token': token
+    }, headers: {
+      'Content-Type': 'application/json',
+      'Authorization': userSession.sessionToken ?? ''
+    });
+    if (response.body == null) {
+      Get.snackbar('Error', 'Al actualizar la información.');
+      return ResponseApi();
+    }
+    if (response.statusCode == 401) {
+      Get.snackbar('Error', 'Sin autorización.');
+      return ResponseApi();
+    }
+    ResponseApi responseApi = ResponseApi.fromJson(response.body);
+    return responseApi;
   }
 
   Future<Stream> updateProfileWithImage(User user, File image) async {
@@ -70,37 +104,4 @@ class UsersProvider extends GetConnect {
     ResponseApi responseApi = ResponseApi.fromJson(response.body);
     return responseApi;
   }
-  // Future<List<User>> findDeliveryMen() async {
-  //   Response response = await get('$url/findDeliveryMen', headers: {
-  //     'Content-Type': 'application/json',
-  //     'Authorization': userSession.sessionToken ?? ''
-  //   });
-  //   if (response.statusCode == 401) {
-  //     Get.snackbar('Peticion denegada',
-  //         'Tu usuario no tiene permitido leer esta informacion');
-  //     return [];
-  //   }
-  //   List<User> users = User.fromJsonList(response.body);
-  //   return users;
-  // }
-
-  // Future<ResponseApi> updateNotificationToken(String id, String token) async {
-  //   Response response = await put('$url/updateNotificationToken', {
-  //     'id': id,
-  //     'token': token
-  //   }, headers: {
-  //     'Content-Type': 'application/json',
-  //     'Authorization': userSession.sessionToken ?? ''
-  //   });
-  //   if (response.body == null) {
-  //     Get.snackbar('Error', 'No se pudo actualizar la informacion');
-  //     return ResponseApi();
-  //   }
-  //   if (response.statusCode == 401) {
-  //     Get.snackbar('Error', 'No estas autorizado para realizar esta peticion');
-  //     return ResponseApi();
-  //   }
-  //   ResponseApi responseApi = ResponseApi.fromJson(response.body);
-  //   return responseApi;
-  // }
 }

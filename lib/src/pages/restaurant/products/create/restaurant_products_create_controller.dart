@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_delivery/src/models/category.dart';
 import 'package:flutter_delivery/src/models/product.dart';
@@ -25,12 +26,6 @@ class RestaurantProductsCreateController extends GetxController {
   RestaurantProductsCreateController() {
     getCategories();
   }
-  void getCategories() async {
-    var result = await categoriesProvider.getAll();
-    categories.clear();
-    categories.addAll(result);
-  }
-
   void createProduct(BuildContext context) async {
     String name = nameController.text;
     String description = descriptionController.text;
@@ -57,6 +52,12 @@ class RestaurantProductsCreateController extends GetxController {
         }
       });
     }
+  }
+
+  void getCategories() async {
+    var result = await categoriesProvider.getAll();
+    categories.clear();
+    categories.addAll(result);
   }
 
   bool isValidForm(String name, String description, String price) {
@@ -118,15 +119,15 @@ class RestaurantProductsCreateController extends GetxController {
           Get.back();
           selectImage(ImageSource.gallery, numberFile);
         },
-        child: Text('Galería', style: TextStyle(color: Colors.black)));
+        child: const Text('Galería', style: TextStyle(color: Colors.black)));
     Widget cameraButton = ElevatedButton(
         onPressed: () {
           Get.back();
           selectImage(ImageSource.camera, numberFile);
         },
-        child: Text('Cámara', style: TextStyle(color: Colors.black)));
+        child: const Text('Cámara', style: TextStyle(color: Colors.black)));
     AlertDialog alertDialog = AlertDialog(
-        title: Text('Selecciona una opcion'),
+        title: const Text('Selecciona una opcion'),
         actions: [galleryButton, cameraButton]);
     showDialog(
         context: context,

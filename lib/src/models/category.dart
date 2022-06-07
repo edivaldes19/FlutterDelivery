@@ -10,6 +10,9 @@ class Category {
   Category({this.id, this.name, this.description});
   factory Category.fromJson(Map<String, dynamic> json) => Category(
       id: json["id"], name: json["name"], description: json["description"]);
+  Map<String, dynamic> toJson() =>
+      {"id": id, "name": name, "description": description};
+
   static List<Category> fromJsonList(List<dynamic> jsonList) {
     List<Category> toList = [];
     for (var item in jsonList) {
@@ -18,7 +21,4 @@ class Category {
     }
     return toList;
   }
-
-  Map<String, dynamic> toJson() =>
-      {"id": id, "name": name, "description": description};
 }

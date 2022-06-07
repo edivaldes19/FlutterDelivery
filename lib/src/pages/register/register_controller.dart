@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_delivery/src/models/response_api.dart';
 import 'package:flutter_delivery/src/models/user.dart';
@@ -19,37 +20,6 @@ class RegisterController extends GetxController {
   UsersProvider usersProvider = UsersProvider();
   ImagePicker picker = ImagePicker();
   File? imageFile;
-  void register(BuildContext ctx) async {
-    String email = emailController.text.trim();
-    String name = nameController.text.trim();
-    String lastname = lastnameController.text.trim();
-    String phone = phoneController.text.trim();
-    String password = passwordController.text.trim();
-    String confirmPassword = confirmPasswordController.text.trim();
-    if (isValidForm(email, name, lastname, phone, password, confirmPassword)) {
-      ProgressDialog dialog = ProgressDialog(context: ctx);
-      dialog.show(max: 100, msg: 'Espere un momento');
-      User user = User(
-          email: email,
-          name: name,
-          lastname: lastname,
-          phone: phone,
-          password: password);
-      Stream stream = await usersProvider.registerWithImage(user, imageFile!);
-      stream.listen((res) {
-        dialog.close();
-        ResponseApi responseApi = ResponseApi.fromJson(json.decode(res));
-        if (responseApi.success == true) {
-          GetStorage().write('user', responseApi.data);
-          Get.offNamedUntil('/client/products/list', (route) => false);
-        } else {
-          Get.snackbar(
-              'Error', responseApi.message ?? 'Error al registrar el usuario.');
-        }
-      });
-    }
-  }
-
   bool isValidForm(String email, String name, String lastname, String phone,
       String password, String confirmPassword) {
     if (email.isEmpty) {
@@ -95,6 +65,37 @@ class RegisterController extends GetxController {
     return true;
   }
 
+  void register(BuildContext ctx) async {
+    String email = emailController.text.trim();
+    String name = nameController.text.trim();
+    String lastname = lastnameController.text.trim();
+    String phone = phoneController.text.trim();
+    String password = passwordController.text.trim();
+    String confirmPassword = confirmPasswordController.text.trim();
+    if (isValidForm(email, name, lastname, phone, password, confirmPassword)) {
+      ProgressDialog dialog = ProgressDialog(context: ctx);
+      dialog.show(max: 100, msg: 'Espere un momento');
+      User user = User(
+          email: email,
+          name: name,
+          lastname: lastname,
+          phone: phone,
+          password: password);
+      Stream stream = await usersProvider.registerWithImage(user, imageFile!);
+      stream.listen((res) {
+        dialog.close();
+        ResponseApi responseApi = ResponseApi.fromJson(json.decode(res));
+        if (responseApi.success == true) {
+          GetStorage().write('user', responseApi.data);
+          Get.offNamedUntil('/client/products/list', (route) => false);
+        } else {
+          Get.snackbar(
+              'Error', responseApi.message ?? 'Error al registrar el usuario.');
+        }
+      });
+    }
+  }
+
   Future selectImage(ImageSource imageSource) async {
     XFile? image = await picker.pickImage(source: imageSource);
     if (image != null) {
@@ -109,15 +110,15 @@ class RegisterController extends GetxController {
           Get.back();
           selectImage(ImageSource.gallery);
         },
-        child: Text('Galería', style: TextStyle(color: Colors.black)));
+        child: const Text('Galería', style: TextStyle(color: Colors.black)));
     Widget cameraButton = ElevatedButton(
         onPressed: () {
           Get.back();
           selectImage(ImageSource.camera);
         },
-        child: Text('Cámara', style: TextStyle(color: Colors.black)));
+        child: const Text('Cámara', style: TextStyle(color: Colors.black)));
     AlertDialog alertDialog = AlertDialog(
-        title: Text('Elige una opción'),
+        title: const Text('Elige una opción'),
         actions: [galleryButton, cameraButton]);
     showDialog(
         context: ctx,

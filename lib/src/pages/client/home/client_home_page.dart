@@ -8,6 +8,7 @@ import 'package:get/get.dart';
 
 class ClientHomePage extends StatelessWidget {
   ClientHomeController con = Get.put(ClientHomeController());
+  ClientHomePage({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,18 +31,18 @@ class ClientHomePage extends StatelessWidget {
             onItemSelected: (index) => con.changeTab(index),
             items: [
               BottomNavyBarItem(
-                  icon: Icon(Icons.apps),
-                  title: Text('Productos'),
+                  icon: const Icon(Icons.apps),
+                  title: const Text('Productos'),
                   activeColor: Colors.white,
                   inactiveColor: Colors.black),
               BottomNavyBarItem(
-                  icon: Icon(Icons.list),
-                  title: Text('Mis pedidos'),
+                  icon: const Icon(Icons.list),
+                  title: const Text('Mis pedidos'),
                   activeColor: Colors.white,
                   inactiveColor: Colors.black),
               BottomNavyBarItem(
-                  icon: Icon(Icons.person),
-                  title: Text('Perfil'),
+                  icon: const Icon(Icons.person),
+                  title: const Text('Perfil'),
                   activeColor: Colors.white,
                   inactiveColor: Colors.black)
             ]));

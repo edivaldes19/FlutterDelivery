@@ -27,15 +27,6 @@ class Address {
       idUser: json["id_user"],
       latitude: json["latitude"],
       longitude: json["longitude"]);
-  static List<Address> fromJsonList(List<dynamic> jsonList) {
-    List<Address> toList = [];
-    for (var item in jsonList) {
-      Address address = Address.fromJson(item);
-      toList.add(address);
-    }
-    return toList;
-  }
-
   Map<String, dynamic> toJson() => {
         "id": id,
         "name": name,
@@ -45,4 +36,13 @@ class Address {
         "latitude": latitude,
         "longitude": longitude
       };
+
+  static List<Address> fromJsonList(List<dynamic> jsonList) {
+    List<Address> toList = [];
+    for (var item in jsonList) {
+      Address address = Address.fromJson(item);
+      toList.add(address);
+    }
+    return toList;
+  }
 }

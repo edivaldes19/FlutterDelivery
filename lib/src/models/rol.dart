@@ -4,11 +4,11 @@ Rol rolFromJson(String str) => Rol.fromJson(json.decode(str));
 String rolToJson(Rol data) => json.encode(data.toJson());
 
 class Rol {
-  Rol({this.id, this.name, this.image, this.route});
   String? id;
   String? name;
   String? image;
   String? route;
+  Rol({this.id, this.name, this.image, this.route});
   factory Rol.fromJson(Map<String, dynamic> json) => Rol(
       id: json["id"],
       name: json["name"],

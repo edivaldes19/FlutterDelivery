@@ -8,6 +8,15 @@ import 'package:get_storage/get_storage.dart';
 class AddressProvider extends GetConnect {
   String url = '${Environment.API_URL}api/address';
   User userSession = User.fromJson(GetStorage().read('user') ?? {});
+  Future<ResponseApi> create(Address address) async {
+    Response response = await post('$url/create', address.toJson(), headers: {
+      'Content-Type': 'application/json',
+      'Authorization': userSession.sessionToken ?? ''
+    });
+    ResponseApi responseApi = ResponseApi.fromJson(response.body);
+    return responseApi;
+  }
+
   Future<List<Address>> findByUser(String idUser) async {
     Response response = await get('$url/findByUser/$idUser', headers: {
       'Content-Type': 'application/json',
@@ -19,14 +28,5 @@ class AddressProvider extends GetConnect {
     }
     List<Address> address = Address.fromJsonList(response.body);
     return address;
-  }
-
-  Future<ResponseApi> create(Address address) async {
-    Response response = await post('$url/create', address.toJson(), headers: {
-      'Content-Type': 'application/json',
-      'Authorization': userSession.sessionToken ?? ''
-    });
-    ResponseApi responseApi = ResponseApi.fromJson(response.body);
-    return responseApi;
   }
 }

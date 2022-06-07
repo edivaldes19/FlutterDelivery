@@ -20,17 +20,6 @@ class ClientAddressCreateController extends GetxController {
   User user = User.fromJson(GetStorage().read('user') ?? {});
   AddressProvider addressProvider = AddressProvider();
   ClientAddressListController clientAddressListController = Get.find();
-  void openMap(BuildContext ctx) async {
-    Map<String, dynamic> addressMap = await showMaterialModalBottomSheet(
-        context: ctx,
-        builder: (context) => ClientAddressMapPage(),
-        isDismissible: false,
-        enableDrag: false);
-    addressController.text = addressMap['address'];
-    latitudePoint = addressMap['latitude'];
-    longitudePoint = addressMap['longitude'];
-  }
-
   void createAddress() async {
     String addressName = nameController.text;
     String fullAddress = addressController.text;
@@ -73,5 +62,16 @@ class ClientAddressCreateController extends GetxController {
       return false;
     }
     return true;
+  }
+
+  void openMap(BuildContext ctx) async {
+    Map<String, dynamic> addressMap = await showMaterialModalBottomSheet(
+        context: ctx,
+        builder: (context) => ClientAddressMapPage(),
+        isDismissible: false,
+        enableDrag: false);
+    addressController.text = addressMap['address'];
+    latitudePoint = addressMap['latitude'];
+    longitudePoint = addressMap['longitude'];
   }
 }

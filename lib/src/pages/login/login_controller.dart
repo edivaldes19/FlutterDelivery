@@ -13,26 +13,6 @@ class LoginController extends GetxController {
     Get.toNamed('/register');
   }
 
-  void login() async {
-    String email = emailController.text.trim();
-    String password = passwordController.text.trim();
-    if (isValidForm(email, password)) {
-      ResponseApi responseApi = await usersProvider.login(email, password);
-      if (responseApi.success == true) {
-        GetStorage().write('user', responseApi.data);
-        User myUser = User.fromJson(GetStorage().read('user') ?? {});
-        if (myUser.roles!.length > 1) {
-          Get.offNamedUntil('/roles', (route) => false);
-        } else {
-          Get.offNamedUntil('/client/home', (route) => false);
-        }
-      } else {
-        Get.snackbar(
-            'Error', responseApi.message ?? 'Error al iniciar sesión.');
-      }
-    }
-  }
-
   bool isValidForm(String email, String password) {
     if (email.isEmpty) {
       Get.snackbar('Error', 'El correo electrónico no puede ser vacío.');
@@ -51,5 +31,25 @@ class LoginController extends GetxController {
       return false;
     }
     return true;
+  }
+
+  void login() async {
+    String email = emailController.text.trim();
+    String password = passwordController.text.trim();
+    if (isValidForm(email, password)) {
+      ResponseApi responseApi = await usersProvider.login(email, password);
+      if (responseApi.success == true) {
+        GetStorage().write('user', responseApi.data);
+        User myUser = User.fromJson(GetStorage().read('user') ?? {});
+        if (myUser.roles!.length > 1) {
+          Get.offNamedUntil('/roles', (route) => false);
+        } else {
+          Get.offNamedUntil('/client/home', (route) => false);
+        }
+      } else {
+        Get.snackbar(
+            'Error', responseApi.message ?? 'Error al iniciar sesión.');
+      }
+    }
   }
 }

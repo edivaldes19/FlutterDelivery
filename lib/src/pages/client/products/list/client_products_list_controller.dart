@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_delivery/src/models/category.dart';
 import 'package:flutter_delivery/src/models/product.dart';
@@ -37,16 +38,6 @@ class ClientProductsListController extends GetxController {
     categories.addAll(result);
   }
 
-  void onChangeText(String text) {
-    const duration = Duration(milliseconds: 800);
-    if (searchOnStoppedTyping != null) {
-      searchOnStoppedTyping?.cancel();
-    }
-    searchOnStoppedTyping = Timer(duration, () {
-      productName.value = text;
-    });
-  }
-
   Future<List<Product>> getProducts(
       String idCategory, String productName) async {
     if (productName.isEmpty) {
@@ -59,6 +50,16 @@ class ClientProductsListController extends GetxController {
 
   void goToOrderCreate() {
     Get.toNamed('/client/orders/create');
+  }
+
+  void onChangeText(String text) {
+    const duration = Duration(milliseconds: 1000);
+    if (searchOnStoppedTyping != null) {
+      searchOnStoppedTyping?.cancel();
+    }
+    searchOnStoppedTyping = Timer(duration, () {
+      productName.value = text;
+    });
   }
 
   void openBottomSheet(BuildContext context, Product product) async {

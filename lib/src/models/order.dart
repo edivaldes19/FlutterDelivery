@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'package:flutter_delivery/src/models/address.dart';
 import 'package:flutter_delivery/src/models/product.dart';
 import 'package:flutter_delivery/src/models/user.dart';
@@ -39,8 +40,8 @@ class Order {
       idAddress: json["id_address"],
       status: json["status"],
       products: json["products"] != null
-          ? List<Product>.from(json["products"].map(
-              (model) => model is Product ? model : Product.fromJson(model)))
+          ? List<Product>.from(json["products"]
+              .map((p) => p is Product ? p : Product.fromJson(p)))
           : [],
       latitude: json["latitude"],
       longitude: json["longitude"],
@@ -60,15 +61,6 @@ class Order {
           : json['address'] is Address
               ? json['address']
               : Address.fromJson(json['address'] ?? {}));
-  static List<Order> fromJsonList(List<dynamic> jsonList) {
-    List<Order> toList = [];
-    for (var item in jsonList) {
-      Order order = Order.fromJson(item);
-      toList.add(order);
-    }
-    return toList;
-  }
-
   Map<String, dynamic> toJson() => {
         "id": id,
         "id_client": idClient,
@@ -83,4 +75,13 @@ class Order {
         "delivery": delivery,
         "address": address
       };
+
+  static List<Order> fromJsonList(List<dynamic> jsonList) {
+    List<Order> toList = [];
+    for (var item in jsonList) {
+      Order order = Order.fromJson(item);
+      toList.add(order);
+    }
+    return toList;
+  }
 }

@@ -9,6 +9,7 @@ import 'package:get/get.dart';
 
 class RestaurantHomePage extends StatelessWidget {
   RestaurantHomeController con = Get.put(RestaurantHomeController());
+  RestaurantHomePage({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,25 +33,25 @@ class RestaurantHomePage extends StatelessWidget {
             onItemSelected: (index) => con.changeTab(index),
             items: [
               BottomNavyBarItem(
-                  icon: Icon(Icons.list),
-                  title: Text('Pedidos'),
+                  icon: const Icon(Icons.list),
+                  title: const Text('Pedidos'),
                   activeColor: Colors.white,
                   inactiveColor: Colors.black),
               BottomNavyBarItem(
-                  icon: Icon(Icons.category),
-                  title: Text('Categoría'),
+                  icon: const Icon(Icons.category),
+                  title: const Text('Categoría'),
                   activeColor: Colors.white,
                   inactiveColor: Colors.black),
               BottomNavyBarItem(
-                  icon: Icon(Icons.restaurant),
-                  title: Text('Producto'),
+                  icon: const Icon(Icons.restaurant),
+                  title: const Text('Producto'),
                   activeColor: Colors.white,
                   inactiveColor: Colors.black),
               BottomNavyBarItem(
-                  icon: Icon(Icons.person),
-                  title: Text('Perfil'),
+                  icon: const Icon(Icons.person),
+                  title: const Text('Perfil'),
                   activeColor: Colors.white,
-                  inactiveColor: Colors.black),
+                  inactiveColor: Colors.black)
             ]));
   }
 }

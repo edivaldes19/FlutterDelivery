@@ -33,15 +33,6 @@ class Product {
       idCategory: json["id_category"],
       price: json["price"].toDouble(),
       quantity: json["quantity"]);
-  static List<Product> fromJsonList(List<dynamic> jsonList) {
-    List<Product> toList = [];
-    for (var item in jsonList) {
-      Product product = Product.fromJson(item);
-      toList.add(product);
-    }
-    return toList;
-  }
-
   Map<String, dynamic> toJson() => {
         "id": id,
         "name": name,
@@ -53,4 +44,13 @@ class Product {
         "price": price,
         "quantity": quantity
       };
+
+  static List<Product> fromJsonList(List<dynamic> jsonList) {
+    List<Product> toList = [];
+    for (var item in jsonList) {
+      Product product = Product.fromJson(item);
+      toList.add(product);
+    }
+    return toList;
+  }
 }

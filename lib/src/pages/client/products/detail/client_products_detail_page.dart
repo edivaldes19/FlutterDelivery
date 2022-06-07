@@ -32,6 +32,59 @@ class ClientProductsDetailPage extends StatelessWidget {
         ])));
   }
 
+  Widget _buttonsAddToBag() {
+    return Column(children: [
+      const Divider(height: 1, color: Colors.grey),
+      Container(
+          margin: const EdgeInsets.only(left: 20, right: 20, top: 25),
+          child: Row(children: [
+            ElevatedButton(
+              onPressed: () => con.removeItem(product!, price, counter),
+              style: ElevatedButton.styleFrom(
+                  primary: Colors.white,
+                  minimumSize: const Size(45, 37),
+                  shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(25),
+                          bottomLeft: Radius.circular(25)))),
+              child: const Text('-',
+                  style: TextStyle(color: Colors.black, fontSize: 22)),
+            ),
+            ElevatedButton(
+                onPressed: () {},
+                style: ElevatedButton.styleFrom(
+                    primary: Colors.white, minimumSize: const Size(40, 37)),
+                child: Text(
+                  '${counter.value}',
+                  style: const TextStyle(color: Colors.black, fontSize: 18),
+                )),
+            ElevatedButton(
+                onPressed: () => con.addItem(product!, price, counter),
+                style: ElevatedButton.styleFrom(
+                    primary: Colors.white,
+                    minimumSize: const Size(45, 37),
+                    shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.only(
+                            topRight: Radius.circular(25),
+                            bottomRight: Radius.circular(25)))),
+                child: const Text('+',
+                    style: TextStyle(color: Colors.black, fontSize: 22))),
+            const Spacer(),
+            ElevatedButton(
+                onPressed: () => con.addToBag(product!, price, counter),
+                style: ElevatedButton.styleFrom(
+                    primary: Colors.amber,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(25))),
+                child: Text('Agregar \$${price.value.toStringAsFixed(2)}',
+                    style: const TextStyle(
+                        color: Colors.black,
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold)))
+          ]))
+    ]);
+  }
+
   Widget _imageSlideshow(BuildContext context) {
     return ImageSlideshow(
         width: double.infinity,
@@ -42,111 +95,61 @@ class ClientProductsDetailPage extends StatelessWidget {
         children: [
           FadeInImage(
               fit: BoxFit.cover,
-              fadeInDuration: Duration(milliseconds: 50),
-              placeholder: AssetImage('assets/img/no-image.png'),
+              fadeInDuration: const Duration(milliseconds: 50),
+              placeholder: const AssetImage('assets/img/loading.png'),
               image: product!.image1 != null
                   ? NetworkImage(product!.image1!)
-                  : AssetImage('assets/img/no-image.png') as ImageProvider),
+                  : const AssetImage('assets/img/loading.png')
+                      as ImageProvider),
           FadeInImage(
               fit: BoxFit.cover,
-              fadeInDuration: Duration(milliseconds: 50),
-              placeholder: AssetImage('assets/img/no-image.png'),
+              fadeInDuration: const Duration(milliseconds: 50),
+              placeholder: const AssetImage('assets/img/loading.png'),
               image: product!.image2 != null
                   ? NetworkImage(product!.image2!)
-                  : AssetImage('assets/img/no-image.png') as ImageProvider),
+                  : const AssetImage('assets/img/loading.png')
+                      as ImageProvider),
           FadeInImage(
               fit: BoxFit.cover,
-              fadeInDuration: Duration(milliseconds: 50),
-              placeholder: AssetImage('assets/img/no-image.png'),
+              fadeInDuration: const Duration(milliseconds: 50),
+              placeholder: const AssetImage('assets/img/loading.png'),
               image: product!.image3 != null
                   ? NetworkImage(product!.image3!)
-                  : AssetImage('assets/img/no-image.png') as ImageProvider)
+                  : const AssetImage('assets/img/loading.png')
+                      as ImageProvider)
         ]);
-  }
-
-  Widget _textNameProduct() {
-    return Container(
-        alignment: Alignment.centerLeft,
-        margin: EdgeInsets.only(top: 30, left: 30, right: 30),
-        child: Text(product?.name ?? 'Nombre',
-            style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 22,
-                color: Colors.black)));
   }
 
   Widget _textDescriptionProduct() {
     return Container(
         alignment: Alignment.centerLeft,
-        margin: EdgeInsets.only(top: 30, left: 30, right: 30),
+        margin: const EdgeInsets.only(top: 30, left: 30, right: 30),
         child: Text(product?.description ?? 'Descripción',
-            style: TextStyle(fontSize: 16)));
+            style: const TextStyle(fontSize: 16)));
+  }
+
+  Widget _textNameProduct() {
+    return Container(
+        alignment: Alignment.centerLeft,
+        margin: const EdgeInsets.only(top: 30, left: 30, right: 30),
+        child: Text(product?.name ?? 'Nombre',
+            style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 22,
+                color: Colors.black)));
   }
 
   Widget _textPriceProduct() {
     return Container(
         alignment: Alignment.centerLeft,
-        margin: EdgeInsets.only(top: 15, left: 30, right: 30),
+        margin: const EdgeInsets.only(top: 15, left: 30, right: 30),
         child: Text(
             product?.price != null
                 ? '\$${product?.price!.toStringAsFixed(2)}'
                 : '0',
-            style: TextStyle(
+            style: const TextStyle(
                 fontSize: 15,
                 color: Colors.black,
                 fontWeight: FontWeight.bold)));
-  }
-
-  Widget _buttonsAddToBag() {
-    return Column(children: [
-      Divider(height: 1, color: Colors.grey),
-      Container(
-          margin: EdgeInsets.only(left: 20, right: 20, top: 25),
-          child: Row(children: [
-            ElevatedButton(
-              onPressed: () => con.removeItem(product!, price, counter),
-              style: ElevatedButton.styleFrom(
-                  primary: Colors.white,
-                  minimumSize: Size(45, 37),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(25),
-                          bottomLeft: Radius.circular(25)))),
-              child: Text('-',
-                  style: TextStyle(color: Colors.black, fontSize: 22)),
-            ),
-            ElevatedButton(
-                onPressed: () {},
-                style: ElevatedButton.styleFrom(
-                    primary: Colors.white, minimumSize: Size(40, 37)),
-                child: Text(
-                  '${counter.value}',
-                  style: TextStyle(color: Colors.black, fontSize: 18),
-                )),
-            ElevatedButton(
-                onPressed: () => con.addItem(product!, price, counter),
-                style: ElevatedButton.styleFrom(
-                    primary: Colors.white,
-                    minimumSize: Size(45, 37),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.only(
-                            topRight: Radius.circular(25),
-                            bottomRight: Radius.circular(25)))),
-                child: Text('+',
-                    style: TextStyle(color: Colors.black, fontSize: 22))),
-            Spacer(),
-            ElevatedButton(
-                onPressed: () => con.addToBag(product!, price, counter),
-                style: ElevatedButton.styleFrom(
-                    primary: Colors.amber,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(25))),
-                child: Text('Agregar \$${price.value.toStringAsFixed(2)}',
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold)))
-          ]))
-    ]);
   }
 }

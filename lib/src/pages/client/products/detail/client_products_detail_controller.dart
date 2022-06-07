@@ -7,21 +7,9 @@ import 'package:get_storage/get_storage.dart';
 class ClientProductsDetailController extends GetxController {
   List<Product> selectedProducts = [];
   ClientProductsListController productsListController = Get.find();
-  void checkIfProductsWasAdded(Product product, var price, var counter) {
-    price.value = product.price ?? 0.0;
-    if (GetStorage().read('shopping_bag') != null) {
-      if (GetStorage().read('shopping_bag') is List<Product>) {
-        selectedProducts = GetStorage().read('shopping_bag');
-      } else {
-        selectedProducts =
-            Product.fromJsonList(GetStorage().read('shopping_bag'));
-      }
-      int index = selectedProducts.indexWhere((p) => p.id == product.id);
-      if (index != -1) {
-        counter.value = selectedProducts[index].quantity!;
-        price.value = product.price! * counter.value;
-      }
-    }
+  void addItem(Product product, var price, var counter) {
+    counter.value++;
+    price.value = product.price! * counter.value;
   }
 
   void addToBag(Product product, var price, var counter) {
@@ -52,9 +40,21 @@ class ClientProductsDetailController extends GetxController {
     }
   }
 
-  void addItem(Product product, var price, var counter) {
-    counter.value++;
-    price.value = product.price! * counter.value;
+  void checkIfProductsWasAdded(Product product, var price, var counter) {
+    price.value = product.price ?? 0.0;
+    if (GetStorage().read('shopping_bag') != null) {
+      if (GetStorage().read('shopping_bag') is List<Product>) {
+        selectedProducts = GetStorage().read('shopping_bag');
+      } else {
+        selectedProducts =
+            Product.fromJsonList(GetStorage().read('shopping_bag'));
+      }
+      int index = selectedProducts.indexWhere((p) => p.id == product.id);
+      if (index != -1) {
+        counter.value = selectedProducts[index].quantity!;
+        price.value = product.price! * counter.value;
+      }
+    }
   }
 
   void removeItem(Product product, var price, var counter) {

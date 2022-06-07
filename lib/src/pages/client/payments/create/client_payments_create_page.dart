@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_credit_card/flutter_credit_card.dart';
-import 'package:flutter_delivery/src/models/mercado_pago_document_type.dart';
 import 'package:flutter_delivery/src/pages/client/payments/create/client_payments_create_controller.dart';
 import 'package:get/get.dart';
 
 class ClientPaymentsCreatePage extends StatelessWidget {
   ClientPaymentsCreateController con =
       Get.put(ClientPaymentsCreateController());
+  ClientPaymentsCreatePage({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Obx(() => Scaffold(
@@ -23,9 +23,9 @@ class ClientPaymentsCreatePage extends StatelessWidget {
               obscureCardCvv: true,
               height: 175,
               labelCardHolder: 'Nombre y apellido',
-              textStyle: TextStyle(color: Colors.black),
+              textStyle: const TextStyle(color: Colors.black),
               width: MediaQuery.of(context).size.width,
-              animationDuration: Duration(milliseconds: 1000),
+              animationDuration: const Duration(milliseconds: 1000),
               onCreditCardWidgetChange: (CreditCardBrand) {},
               glassmorphismConfig: Glassmorphism(
                   blurX: 5.0,
@@ -42,7 +42,7 @@ class ClientPaymentsCreatePage extends StatelessWidget {
                         0
                       ]))),
           Container(
-              margin: EdgeInsets.symmetric(horizontal: 20),
+              margin: const EdgeInsets.symmetric(horizontal: 20),
               child: CreditCardForm(
                   formKey: con.keyForm, // Required
                   onCreditCardModelChange:
@@ -68,62 +68,61 @@ class ClientPaymentsCreatePage extends StatelessWidget {
                   cvvCode: '',
                   expiryDate: '',
                   cardHolderName: '',
-                  cardNumber: '')),
-          _dropDownWidget(con.documents),
-          _textFieldDocumentNumber()
+                  cardNumber: ''))
+          // _dropDownWidget(con.documents),
+          // _textFieldDocumentNumber()
         ])));
   }
 
-  Widget _textFieldDocumentNumber() {
-    return Container(
-        margin: EdgeInsets.symmetric(horizontal: 37, vertical: 10),
-        child: TextField(
-            controller: con.documentNumberController,
-            keyboardType: TextInputType.phone,
-            decoration: InputDecoration(
-                hintText: 'Número de documento',
-                suffixIcon: Icon(Icons.description))));
-  }
-
+  // Widget _textFieldDocumentNumber() {
+  //   return Container(
+  //       margin: const EdgeInsets.symmetric(horizontal: 37, vertical: 10),
+  //       child: TextField(
+  //           controller: con.documentNumberController,
+  //           keyboardType: TextInputType.phone,
+  //           decoration: const InputDecoration(
+  //               hintText: 'Número de documento',
+  //               suffixIcon: Icon(Icons.description))));
+  // }
   Widget _buttonNext(BuildContext context) {
     return Container(
         width: double.infinity,
         height: 50,
-        margin: EdgeInsets.symmetric(horizontal: 40, vertical: 20),
+        margin: const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
         child: ElevatedButton(
             onPressed: () => con.createCardToken(),
             style: ElevatedButton.styleFrom(
-                padding: EdgeInsets.symmetric(vertical: 15)),
-            child: Text('Continuar', style: TextStyle(color: Colors.black))));
+                padding: const EdgeInsets.symmetric(vertical: 15)),
+            child: const Text('Continuar',
+                style: TextStyle(color: Colors.black))));
   }
+  // Widget _dropDownWidget(List<MercadoPagoDocumentType> documents) {
+  //   return Container(
+  //       padding: const EdgeInsets.symmetric(horizontal: 50),
+  //       margin: const EdgeInsets.only(top: 10),
+  //       child: DropdownButton(
+  //           underline: Container(
+  //               alignment: Alignment.centerRight,
+  //               child: const Icon(Icons.arrow_drop_down_circle,
+  //                   color: Colors.amber)),
+  //           elevation: 3,
+  //           isExpanded: true,
+  //           hint: const Text('Seleccionar tipo de documento',
+  //               style: TextStyle(fontSize: 15)),
+  //           items: _dropDownItems(documents),
+  //           value: con.idDocument.value == '' ? null : con.idDocument.value,
+  //           onChanged: (option) {
+  //             con.idDocument.value = option.toString();
+  //           }));
+  // }
 
-  Widget _dropDownWidget(List<MercadoPagoDocumentType> documents) {
-    return Container(
-        padding: EdgeInsets.symmetric(horizontal: 50),
-        margin: EdgeInsets.only(top: 10),
-        child: DropdownButton(
-            underline: Container(
-                alignment: Alignment.centerRight,
-                child: Icon(Icons.arrow_drop_down_circle, color: Colors.amber)),
-            elevation: 3,
-            isExpanded: true,
-            hint: Text('Seleccionar tipo de documento',
-                style: TextStyle(fontSize: 15)),
-            items: _dropDownItems(documents),
-            value: con.idDocument.value == '' ? null : con.idDocument.value,
-            onChanged: (option) {
-              print('Opcion seleccionada ${option}');
-              con.idDocument.value = option.toString();
-            }));
-  }
-
-  List<DropdownMenuItem<String>> _dropDownItems(
-      List<MercadoPagoDocumentType> documents) {
-    List<DropdownMenuItem<String>> list = [];
-    for (var document in documents) {
-      list.add(DropdownMenuItem(
-          value: document.id, child: Text(document.name ?? '')));
-    }
-    return list;
-  }
+  // List<DropdownMenuItem<String>> _dropDownItems(
+  //     List<MercadoPagoDocumentType> documents) {
+  //   List<DropdownMenuItem<String>> list = [];
+  //   for (var document in documents) {
+  //     list.add(DropdownMenuItem(
+  //         value: document.id, child: Text(document.name ?? '')));
+  //   }
+  //   return list;
+  // }
 }

@@ -21,13 +21,6 @@ class ClientOrdersCreateController extends GetxController {
       getTotal();
     }
   }
-  void getTotal() {
-    total.value = 0.0;
-    for (var product in selectedProducts) {
-      total.value += (product.quantity! * product.price!);
-    }
-  }
-
   void addItem(Product product) {
     int index = selectedProducts.indexWhere((p) => p.id == product.id);
     selectedProducts.remove(product);
@@ -38,21 +31,6 @@ class ClientOrdersCreateController extends GetxController {
     productsListController.items.value = 0;
     for (var p in selectedProducts) {
       productsListController.items.value += p.quantity!;
-    }
-  }
-
-  void removeItem(Product product) {
-    if (product.quantity! > 1) {
-      int index = selectedProducts.indexWhere((p) => p.id == product.id);
-      selectedProducts.remove(product);
-      product.quantity = product.quantity! - 1;
-      selectedProducts.insert(index, product);
-      GetStorage().write('shopping_bag', selectedProducts);
-      getTotal();
-      productsListController.items.value = 0;
-      for (var p in selectedProducts) {
-        productsListController.items.value += p.quantity!;
-      }
     }
   }
 
@@ -70,7 +48,29 @@ class ClientOrdersCreateController extends GetxController {
     }
   }
 
+  void getTotal() {
+    total.value = 0.0;
+    for (var product in selectedProducts) {
+      total.value += (product.quantity! * product.price!);
+    }
+  }
+
   void goToAddressList() {
     Get.toNamed('/client/address/list');
+  }
+
+  void removeItem(Product product) {
+    if (product.quantity! > 1) {
+      int index = selectedProducts.indexWhere((p) => p.id == product.id);
+      selectedProducts.remove(product);
+      product.quantity = product.quantity! - 1;
+      selectedProducts.insert(index, product);
+      GetStorage().write('shopping_bag', selectedProducts);
+      getTotal();
+      productsListController.items.value = 0;
+      for (var p in selectedProducts) {
+        productsListController.items.value += p.quantity!;
+      }
+    }
   }
 }

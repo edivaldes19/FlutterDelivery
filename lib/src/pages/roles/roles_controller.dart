@@ -6,6 +6,7 @@ import 'package:get_storage/get_storage.dart';
 class RolesController extends GetxController {
   User user = User.fromJson(GetStorage().read('user') ?? {});
   void goToPageRol(Rol rol) {
-    Get.offNamedUntil(rol.route ?? '', (route) => false);
+    GetStorage().write('current_role', rol.name ?? 'Desconocido');
+    Get.offNamedUntil(rol.route ?? '/', (route) => false);
   }
 }

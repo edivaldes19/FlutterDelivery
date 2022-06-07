@@ -8,6 +8,11 @@ class RestaurantCategoriesCreateController extends GetxController {
   TextEditingController nameController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
   CategoriesProvider categoriesProvider = CategoriesProvider();
+  void clearForm() {
+    nameController.text = '';
+    descriptionController.text = '';
+  }
+
   void createCategory() async {
     String name = nameController.text;
     String description = descriptionController.text;
@@ -19,13 +24,7 @@ class RestaurantCategoriesCreateController extends GetxController {
         clearForm();
       }
     } else {
-      Get.snackbar(
-          'Error', 'Ingresa todos los campos para crear la categoria.');
+      Get.snackbar('Error', 'Aún quedan campos vacíos.');
     }
-  }
-
-  void clearForm() {
-    nameController.text = '';
-    descriptionController.text = '';
   }
 }
